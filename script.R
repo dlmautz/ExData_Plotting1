@@ -1,0 +1,34 @@
+setwd("~/Coursera Exploratory Data Analysis - Project 1/ExData_Plotting1")
+data <- read.table('household_power_consumption.txt', header = TRUE, sep = ';')
+data <- within(data, Date_time <- as.POSIXlt(paste(Date, Time), format = "%d/%m/%Y %H:%M:%S"))
+data <- subset(data, as.Date(Date_time) >= as.Date('2007-02-01') & as.Date(Date_time) <= as.Date('2007-02-02'))
+
+with(data,{
+  Global_active_power <- as.numeric(as.character(Global_active_power)) 
+  Sub_metering_1 <- as.numeric(as.character(Sub_metering_1)) 
+  Sub_metering_2 <- as.numeric(as.character(Sub_metering_2)) 
+  Sub_metering_3 <- as.numeric(as.character(Sub_metering_3)) 
+  Voltage <- as.numeric(as.character(Voltage))
+})
+
+hist(data$Global_active_power, col="red", main="Global Active Power", xlab="Global Active Power (kilowatts)")
+
+with(data,plot(Date_time,Global_active_power,type='l',xlab='',ylab='Global Active Power (kwatts)'))
+
+with(data,{
+  plot(Date_time,Sub_metering_1,type='l',xlab='',ylab='Energy Sub Metering')
+  lines(Date_time,Sub_metering_2,col='red')
+  lines(Date_time,Sub_metering_3,col='blue')
+  legend('topright', legend=c('Sub_metering_1','Sub_metering_2','Sub_metering_3'), lty=1, col=c('black','red','blue'))
+})
+
+par(mfrow=c(2,2))
+with(data,{
+  plot(Date_time,Global_active_power,type='l',xlab='',ylab='Global Active Power')
+  plot(Date_time,Voltage,type='l',xlab='',ylab='Voltage')
+  plot(Date_time,Sub_metering_1,type='l',xlab='',ylab='Energy Sub Metering')
+  lines(Date_time,Sub_metering_2,col='red')
+  lines(Date_time,Sub_metering_3,col='blue')
+  legend('topright', legend=c('Sub_metering_1','Sub_metering_2','Sub_metering_3'), lty=1, col=c('black','red','blue'))
+  plot(Date_time,Global_reactive_power,type='l',xlab='',ylab='Global Reactive Power')
+})
